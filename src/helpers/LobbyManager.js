@@ -35,53 +35,61 @@ export default class LobbyManager {
     }
   }
 
-  kickBotFromTeam () {
+  async kickBotFromTeam () {
     return this.kickFromTeam(this.dota.AccountID)
   }
 
-  kickFromTeam (steamId) {
+  async kickFromTeam (steamId) {
     return new Promise((resolve, reject) => {
-      try {
-        this.dota.practiceLobbyKickFromTeam(steamId.low, (err) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve()
-          }
-        })
-      } catch (e) {
-        reject(e)
-      }
+      this.dota.practiceLobbyKickFromTeam(steamId, (err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
     })
   }
 
-  handleLobbyIdReceived (lobby) {
-    this.chatChannel = `Lobby_${lobby.lobby_id}`
-    this.dota.joinChat(this.chatChannel, this.ChatChannelType.DOTAChannelType_Lobby)
+  async handleLobbyIdReceived (lobby) {
+    return new Promise((resolve, reject) => {
+      this.chatChannel = `Lobby_${lobby.lobby_id}`
+      this.dota.joinChat(this.chatChannel)
+    })
   }
 
-  inviteAll (lobby) {
-    lobby.players.forEach(it => this.invite(it.steamId, lobby))
+  async inviteAll (lobby) {
+    await lobby.players.forEach(async(it) => this.invite(it.steamId, lobby))
   }
 
-  invite (playerId, lobby) {
-    console.log(`Sent an invite to ${playerId} to lobby #${lobby.name}`)
-    this.dota.inviteToLobby(playerId)
+  async invite (playerId, lobby) {
+    return new Promise((resolve, reject) => {
+      console.log(`Sent an invite to ${playerId} to lobby #${lobby.name}`)
+      this.dota.inviteToLobby(playerId, (err) => {
+        if (err) {
+          console.log(err)
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   async startLobby (lobby) {
-    // The bot SteamId has in Instance
-    await this.kickBotFromTeam()
+    return Promise.all([
+      // The bot SteamId has in Instance
+      this.kickBotFromTeam(),
 
-    // Setup handlers
-    // this.handleLobbyTimeout()
-    this.handleLobbyIdReceived(lobby)
-    // this.handleMatchIdReceived()
-    // this.handleGameResultReceived()
-    // this.handleMemberPositionUpdated()
-    // this.handlePlayerReady()
-
-    this.inviteAll(lobby)
+      // Setup handlers
+      // this.handleLobbyTimeout()
+      this.handleLobbyIdReceived(lobby),
+      // this.handleMatchIdReceived()
+      // this.handleGameResultReceived()
+      // this.handleMemberPositionUpdated()
+      // this.handlePlayerReady()
+      this.inviteAll(lobby)
+    ])
   }
 
   async launchLobby (lobby) {

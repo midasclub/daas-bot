@@ -10,7 +10,7 @@ const bot = {
 }
 const players = [
   {
-    steamId: 0000000,
+    steamId: '000000',
     isCaptain: 1,
     isRadiant: 1,
     isReady: false
@@ -18,7 +18,7 @@ const players = [
 ]
 const lobby = {
   name: 'nameBot',
-  password: '123456',
+  password: '123789',
   gameMode: 0,
   players
 }
