@@ -5,20 +5,20 @@ import LobbyManager from './helpers/LobbyManager'
 dotenv.config()
 
 const bot = {
-  username: '',
-  password: ''
+  username: 'midasbot3',
+  password: 'midasclub3'
 }
 const players = [
   {
-    steamId: '000000',
+    steamId: '76561198847401345',
     isCaptain: 1,
     isRadiant: 1,
     isReady: false
   }
 ]
 const lobby = {
-  name: 'nameBot',
-  password: '123789',
+  name: 'DaaS Test - New Bot v2',
+  password: '123',
   gameMode: 0,
   players
 }
