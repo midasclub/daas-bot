@@ -1,0 +1,39 @@
+{
+  "name": "daas-bot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/index.js --exec babel-node",
+    "build": "babel ./src -d ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midasclub/daas-bot.git"
+  },
+  "keywords": [
+    "nodejs",
+    "steam",
+    "dota2",
+    "bot",
+    "lobby"
+  ],
+  "author": "Araan Branco <araanbranco@protonmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/midasclub/daas-bot/issues"
+  },
+  "homepage": "https://github.com/midasclub/daas-bot#readme",
+  "dependencies": {
+    "dota2": "^6.1.1",
+    "dotenv": "^6.0.0",
+    "steam": "^1.4.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "nodemon": "^1.18.3"
+  }
+}
