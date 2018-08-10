@@ -28,6 +28,7 @@
   "dependencies": {
     "dota2": "^6.1.1",
     "dotenv": "^6.0.0",
+    "pg": "^7.4.3",
     "steam": "^1.4.0"
   },
   "devDependencies": {
