@@ -30,10 +30,25 @@ function createLobbyTable() {
   // machine_id INTEGER REFERENCES machines(id) UNIQUE
 }
 
+function createLobbyPlayersTable() {
+  return client.query(`
+    CREATE TABLE IF NOT EXISTS lobby_players (
+      id         SERIAL PRIMARY KEY,
+      steam_id   VARCHAR (50) NOT NULL,
+      lobby_id   INTEGER NOT NULL,
+      is_radiant BOOLEAN NOT NULL,
+      is_ready   BOOLEAN NOT NULL DEFAULT false,
+      is_captain BOOLEAN NOT NULL DEFAULT false,
+      FOREIGN KEY ("lobby_id") REFERENCES lobbies("id") on delete cascade on update cascade
+    );
+  `) 
+}
+
 export function up () {
   const queries = [];
   queries.push(createBotTable())
   queries.push(createLobbyTable())
+  queries.push(createLobbyPlayersTable())
   
   return Promise.all(queries)
 }

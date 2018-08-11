@@ -3,7 +3,8 @@ import client from '../connection'
 export function down () {
   const commands = [
     'DROP TABLE IF EXISTS bots CASCADE;',
-    'DROP TABLE IF EXISTS lobbies CASCADE;'
+    'DROP TABLE IF EXISTS lobbies CASCADE;',
+    'DROP TABLE IF EXISTS lobby_players CASCADE;'
   ]
 
   const queries = []

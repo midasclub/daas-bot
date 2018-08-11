@@ -14,6 +14,7 @@ async function TestLobbyDatabase () {
       }
 
       const lobby = await Lobby.create(data)
+      await Lobby.create(data)
 
       expect(lobby).to.have.property('name', 'lobby test #1')
       expect(lobby).to.have.property('password', '2322')
@@ -36,7 +37,7 @@ async function TestLobbyDatabase () {
 
     it("should get all Lobbies.", async () => {
       const lobbies = await Lobby.findAll()
-      expect(lobbies).to.have.lengthOf(1);
+      expect(lobbies).to.have.lengthOf(2);
     })
 
     it("should update a Lobby", async () => {
