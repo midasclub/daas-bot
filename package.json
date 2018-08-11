@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build && mocha",
     "start": "nodemon ./src/index.js --exec babel-node",
     "build": "babel ./src -d ./dist"
   },
@@ -26,8 +26,10 @@
   },
   "homepage": "https://github.com/midasclub/daas-bot#readme",
   "dependencies": {
+    "chai": "^4.1.2",
     "dota2": "^6.1.1",
     "dotenv": "^6.0.0",
+    "mocha": "^5.2.0",
     "pg": "^7.4.3",
     "steam": "^1.4.0"
   },
