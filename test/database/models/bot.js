@@ -11,6 +11,7 @@ async function TestBotDatabase () {
       }
 
       const bot = await Bot.create(data)
+      await Bot.create({ username: 'bot2' , password: '1233' })
 
       expect(bot).to.have.property('username', data.username)
       expect(bot).to.have.property('password', data.password)
@@ -27,7 +28,7 @@ async function TestBotDatabase () {
 
     it("should get all Bots.", async () => {
       const bots = await Bot.findAll()
-      expect(bots).to.have.lengthOf(1);
+      expect(bots).to.have.lengthOf(2);
     })
 
     it("should update a Bot", async () => {

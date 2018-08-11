@@ -21,13 +21,14 @@ function createLobbyTable() {
       password  VARCHAR (50) NOT NULL,
       server    INTEGER NOT NULL,
       game_mode INTEGER NOT NULL,
+      machine_id   INTEGER UNIQUE,
       radiant_has_first_pick BOOLEAN NOT NULL,
       match_id  VARCHAR (100),
       match_result INTEGER,
-      status INTEGER NOT NULL DEFAULT 0
+      status INTEGER NOT NULL DEFAULT 0,
+      FOREIGN KEY ("machine_id") REFERENCES machines("id")
     );
-  `) 
-  // machine_id INTEGER REFERENCES machines(id) UNIQUE
+  `)
 }
 
 function createLobbyPlayersTable() {
@@ -44,9 +45,22 @@ function createLobbyPlayersTable() {
   `) 
 }
 
+function createMachinesTable() {
+  return client.query(`
+    CREATE TABLE IF NOT EXISTS machines (
+      id         SERIAL PRIMARY KEY,
+      bot_id     INTEGER NOT NULL,
+      is_terminated BOOLEAN NOT NULL,
+      started_at   TIMESTAMP NOT NULL,
+      FOREIGN KEY ("bot_id") REFERENCES bots("id")
+    );
+  `) 
+}
+
 export function up () {
   const queries = [];
   queries.push(createBotTable())
+  queries.push(createMachinesTable())
   queries.push(createLobbyTable())
   queries.push(createLobbyPlayersTable())
   
