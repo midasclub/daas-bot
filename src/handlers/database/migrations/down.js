@@ -1,13 +1,12 @@
 import client from '../connection'
 
 export function down () {
-  const sql = `
-    DROP TABLE IF EXISTS bots CASCADE;
-  `
-  const query = {
-    name: 'delete-tables',
-    text: sql
-  }
+  const commands = [
+    'DROP TABLE IF EXISTS bots CASCADE;',
+    'DROP TABLE IF EXISTS lobbies CASCADE;'
+  ]
 
-  return client.query(query)
+  const queries = []
+  commands.forEach(sql => queries.push(client.query(sql)))
+  return Promise.all(queries);
 }

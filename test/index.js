@@ -1,6 +1,6 @@
 require('mocha')
 const testDatabase = require('./database')
-const {up, down, closeDb, db} = require('../dist/handlers/database')
+const {up, down, db} = require('../dist/handlers/database')
 
 before(async () => {
   await down()
