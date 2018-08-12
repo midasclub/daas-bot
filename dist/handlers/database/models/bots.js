@@ -59,10 +59,28 @@ var Bot = exports.Bot = function () {
       });
     }
   }, {
+    key: 'findByStatus',
+    value: function findByStatus(status) {
+      return new Promise(function (resolve, reject) {
+        var sql = 'SELECT * FROM bots WHERE status = ' + status;
+
+        var query = {
+          name: 'find-by-status-bots',
+          text: sql
+        };
+
+        _connection2.default.query(query).then(function (res) {
+          return resolve(res.rows[0]);
+        }).catch(function (err) {
+          return reject(err);
+        });
+      });
+    }
+  }, {
     key: 'findOne',
     value: function findOne(id) {
       return new Promise(function (resolve, reject) {
-        var sql = 'SELECT * FROM bots WHERE id =' + id;
+        var sql = 'SELECT * FROM bots WHERE id = ' + id;
 
         var query = {
           name: 'find-one-bots',
@@ -118,6 +136,16 @@ var Bot = exports.Bot = function () {
           return reject(err);
         });
       });
+    }
+  }, {
+    key: 'STATUS',
+    get: function get() {
+      return {
+        OFFLINE: 0,
+        IDLE: 1,
+        IN_LOBBY: 2,
+        IN_MATCH: 3
+      };
     }
   }]);
 

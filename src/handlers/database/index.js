@@ -6,5 +6,5 @@ export {LobbyPlayer} from './models/lobby_players'
 export {Machine} from './models/machine'
 
 import client from './connection'
-export const db = client;
-export default client;
+export const db = client
+export default client

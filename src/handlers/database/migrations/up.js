@@ -1,6 +1,6 @@
 import client from '../connection'
 
-function createBotTable() {
+function createBotTable () {
   return client.query(`
     CREATE TABLE IF NOT EXISTS bots (
       id       SERIAL PRIMARY KEY,
@@ -13,7 +13,7 @@ function createBotTable() {
   `)
 }
 
-function createLobbyTable() {
+function createLobbyTable () {
   return client.query(`
     CREATE TABLE IF NOT EXISTS lobbies (
       id        SERIAL PRIMARY KEY,
@@ -31,7 +31,7 @@ function createLobbyTable() {
   `)
 }
 
-function createLobbyPlayersTable() {
+function createLobbyPlayersTable () {
   return client.query(`
     CREATE TABLE IF NOT EXISTS lobby_players (
       id         SERIAL PRIMARY KEY,
@@ -42,10 +42,10 @@ function createLobbyPlayersTable() {
       is_captain BOOLEAN NOT NULL DEFAULT false,
       FOREIGN KEY ("lobby_id") REFERENCES lobbies("id") on delete cascade on update cascade
     );
-  `) 
+  `)
 }
 
-function createMachinesTable() {
+function createMachinesTable () {
   return client.query(`
     CREATE TABLE IF NOT EXISTS machines (
       id         SERIAL PRIMARY KEY,
@@ -54,15 +54,15 @@ function createMachinesTable() {
       started_at   TIMESTAMP NOT NULL,
       FOREIGN KEY ("bot_id") REFERENCES bots("id")
     );
-  `) 
+  `)
 }
 
 export function up () {
-  const queries = [];
+  const queries = []
   queries.push(createBotTable())
   queries.push(createMachinesTable())
   queries.push(createLobbyTable())
   queries.push(createLobbyPlayersTable())
-  
+
   return Promise.all(queries)
 }

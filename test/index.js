@@ -7,7 +7,7 @@ before(async () => {
   await up()
 })
 
-describe("Test database functions", () => testDatabase())
+describe('Test database functions', () => testDatabase())
 
 after(async () => {
   await down()

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.db = exports.LobbyPlayer = exports.Lobby = exports.Bot = exports.down = exports.up = undefined;
+exports.db = exports.Machine = exports.LobbyPlayer = exports.Lobby = exports.Bot = exports.down = exports.up = undefined;
 
 var _up = require('./migrations/up');
 
@@ -47,6 +47,15 @@ Object.defineProperty(exports, 'LobbyPlayer', {
   enumerable: true,
   get: function get() {
     return _lobby_players.LobbyPlayer;
+  }
+});
+
+var _machine = require('./models/machine');
+
+Object.defineProperty(exports, 'Machine', {
+  enumerable: true,
+  get: function get() {
+    return _machine.Machine;
   }
 });
 

@@ -10,5 +10,5 @@ export function down () {
 
   const queries = []
   commands.forEach(sql => queries.push(client.query(sql)))
-  return Promise.all(queries);
+  return Promise.all(queries)
 }

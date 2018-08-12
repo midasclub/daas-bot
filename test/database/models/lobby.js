@@ -1,10 +1,10 @@
 require('mocha')
-const expect =  require('chai').expect
+const expect = require('chai').expect
 const {Lobby} = require('../../../dist/handlers/database')
 
 async function TestLobbyDatabase () {
-  describe("Test database Lobby functions.", () => {
-    it("should create a lobby.", async () => {
+  describe('Test database Lobby functions.', () => {
+    it('should create a lobby.', async () => {
       const data = {
         name: 'lobby test #1',
         password: '2322',
@@ -24,7 +24,7 @@ async function TestLobbyDatabase () {
       expect(lobby).to.have.property('status', 0)
     })
 
-    it("should get a Lobby.", async () => {
+    it('should get a Lobby.', async () => {
       const lobby = await Lobby.findOne(1)
 
       expect(lobby).to.have.property('name', 'lobby test #1')
@@ -35,12 +35,12 @@ async function TestLobbyDatabase () {
       expect(lobby).to.have.property('status', 0)
     })
 
-    it("should get all Lobbies.", async () => {
+    it('should get all Lobbies.', async () => {
       const lobbies = await Lobby.findAll()
-      expect(lobbies).to.have.lengthOf(2);
+      expect(lobbies).to.have.lengthOf(2)
     })
 
-    it("should update a Lobby", async () => {
+    it('should update a Lobby', async () => {
       const data = {
         name: 'new name lobby',
         password: '7777',
@@ -61,13 +61,12 @@ async function TestLobbyDatabase () {
       expect(lobby).to.have.property('status', 1)
     })
 
-    it("should delete a Lobby", async () => {
+    it('should delete a Lobby', async () => {
       await Lobby.delete(1)
       const lobby = await Lobby.findOne(1)
-      expect(lobby).to.be.undefined;
+      expect(lobby).to.be.undefined
     })
-
   })
 }
 
-module.exports = TestLobbyDatabase;
+module.exports = TestLobbyDatabase

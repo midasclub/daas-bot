@@ -2,11 +2,11 @@ import { Client } from 'pg'
 import * as dotenv from 'dotenv'
 
 if (!process.env.DATABASE_URL) {
-	dotenv.config()
+  dotenv.config()
 }
 
 const client = new Client({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL
 })
 
 client.connect((err) => {
