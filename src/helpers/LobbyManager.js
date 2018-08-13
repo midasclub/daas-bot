@@ -1,4 +1,5 @@
 import { SeriesType, ServerRegion, schema } from 'dota2'
+import Redis from '../handlers/redis'
 
 export default class LobbyManager {
   constructor (instance) {
@@ -92,13 +93,13 @@ export default class LobbyManager {
     ])
   }
 
-  async launchLobby (lobby) {
+  async launchLobby (channel, lobby) {
     try {
       const self = this
       return new Promise((resolve, reject) => {
         const options = self.getLobbyOptions(lobby)
 
-        self.dota.on('practiceLobbyUpdate', (lobby) => console.log(JSON.stringify(lobby, null, 2)))
+        self.dota.on('practiceLobbyUpdate', (lobby) => Redis.sendMessage(channel, JSON.stringify(lobby)))
 
         self.dota.createPracticeLobby(options, async (err) => {
           if (err) {

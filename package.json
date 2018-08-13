@@ -31,6 +31,7 @@
     "dotenv": "^6.0.0",
     "mocha": "^5.2.0",
     "pg": "^7.4.3",
+    "redis": "^2.8.0",
     "steam": "^1.4.0"
   },
   "devDependencies": {
