@@ -2,10 +2,13 @@ import { SeriesType, ServerRegion, schema } from 'dota2'
 import Redis from '../handlers/redis'
 
 export default class LobbyManager {
-  constructor (instance) {
+  constructor (channel, instance) {
+    this.channel = channel
     this.dota = instance
     this.CMPick = schema.lookupEnum('DOTA_CM_PICK').values
     this.ChatChannelType = schema.lookupEnum('DOTAChatChannelType_t').values
+    this.ChatChannelType = schema.lookupEnum('DOTAChatChannelType_t').values
+    this.lobby = {}
   }
 
   getCMPick (radiantHasFirstPick = 0) {
@@ -42,6 +45,7 @@ export default class LobbyManager {
 
   async kickFromTeam (steamId) {
     return new Promise((resolve, reject) => {
+      console.log(`Kick player: ${steamId} from team`)
       this.dota.practiceLobbyKickFromTeam(steamId, (err) => {
         if (err) {
           reject(err)
@@ -52,9 +56,48 @@ export default class LobbyManager {
     })
   }
 
+  async kickFromLobby (steamId) {
+    return new Promise((resolve, reject) => {
+      console.log(`Kick player: '${steamId}' from lobby`)
+      console.log(JSON.stringify(this.lobby, null, 2))
+      this.dota.practiceLobbyKick(steamId, (err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+
+  async leaveLobby () {
+    return new Promise((resolve, reject) => {
+      console.log(`Cancel lobby and leave all players`)
+      this.dota.leavePracticeLobby((err) => {
+        if (err) {
+          reject(
+            new Error(
+              `An error occurred when trying to leave the lobby - ${err}`
+            )
+          )
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+
+  async sendMessageToChat (message) {
+    return new Promise((resolve, reject) => {
+      console.log(`Send message to lobby: ${message} in channel: ${this.chatChannel}`)
+      this.dota.sendMessage(message, this.chatChannel, this.ChatChannelType.DOTAChannelType_Lobby)
+      resolve()
+    })
+  }
+
   async handleLobbyIdReceived (lobby) {
     return new Promise((resolve, reject) => {
-      this.chatChannel = `Lobby_${lobby.lobby_id}`
+      this.chatChannel = `Lobby_1`
       this.dota.joinChat(this.chatChannel)
     })
   }
@@ -99,7 +142,11 @@ export default class LobbyManager {
       return new Promise((resolve, reject) => {
         const options = self.getLobbyOptions(lobby)
 
-        self.dota.on('practiceLobbyUpdate', (lobby) => Redis.sendMessage(channel, JSON.stringify(lobby)))
+        // self.dota.on('practiceLobbyUpdate', (lobby) => Redis.sendMessage(channel, JSON.stringify(lobby)))
+        self.dota.on('practiceLobbyUpdate', (lobby) => {
+          self.lobby = lobby
+          console.log(lobby)
+        })
 
         self.dota.createPracticeLobby(options, async (err) => {
           if (err) {

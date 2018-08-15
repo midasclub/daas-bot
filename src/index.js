@@ -9,7 +9,7 @@ import Redis from './handlers/redis'
 const channel = 'foo'
 const players = [
   {
-    steamId: '76561198178623609',
+    steamId: '76561198847401345',
     isCaptain: 1,
     isRadiant: 1,
     isReady: false
@@ -27,12 +27,13 @@ async function init () {
   // Find one bot available
   const bot = await Bot.findByStatus(Bot.STATUS.OFFLINE)
 
-  // Receive messages from Pub/Sub
-  Redis.receiveMessages(channel)
-
   // Init Lobby Dota with data
   const dotaInstance = await DotaStrategy.connect(bot)
-  const lobbyInstance = new LobbyManager(dotaInstance)
+  const lobbyInstance = new LobbyManager(channel, dotaInstance)
+
+  // Receive messages from Pub/Sub
+  await Redis.receiveMessages(channel, lobbyInstance)
+
   await lobbyInstance.launchLobby(channel, lobby)
 }
 

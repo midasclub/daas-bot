@@ -1,4 +1,5 @@
 import redis from 'redis'
+import Core from '../handlers/core'
 
 class Redis {
   constructor () {
@@ -17,13 +18,17 @@ class Redis {
     console.log('Connected to Redis on publish')
   }
 
-  receiveMessages (channel) {
-    this.connectSubscribe.on('message', (channel, message) => {
-      console.log(channel, message)
-    })
+  receiveMessages (channel, lobbyInstance) {
+    return new Promise((resolve, reject) => {
+      this.connectSubscribe.on('message', async (channel, message) => {
+        await Core.receiveCommand(lobbyInstance, message)
+      })
 
-    console.log(`Subscribe in channel ${channel}`)
-    this.connectSubscribe.subscribe(channel)
+      console.log(`Subscribe in channel ${channel}`)
+      this.connectSubscribe.subscribe(channel)
+
+      resolve()
+    })
   }
 
   sendMessage (channel, message) {
