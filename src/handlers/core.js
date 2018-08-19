@@ -18,6 +18,14 @@ class Core {
         case 'cancelLobby':
           await lobbyInstance.leaveLobby()
           break
+
+        case 'getMembers':
+          lobbyInstance.getMembers()
+          break
+
+        case 'getLobbyInfo':
+          lobbyInstance.getLobbyInfos()
+          break
       }
     } catch (e) {
       console.log('Error: ', e)

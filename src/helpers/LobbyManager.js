@@ -1,5 +1,4 @@
 import { SeriesType, ServerRegion, schema } from 'dota2'
-import Redis from '../handlers/redis'
 
 export default class LobbyManager {
   constructor (channel, instance) {
@@ -70,6 +69,16 @@ export default class LobbyManager {
     })
   }
 
+  getMembers () {
+    console.log(`Get members from Lobby`)
+    return this.lobby.members.filter(i => i.slot !== 0)
+  }
+
+  getLobbyInfos () {
+    console.log(`Get Lobby informations`)
+    return this.lobby
+  }
+
   async leaveLobby () {
     return new Promise((resolve, reject) => {
       console.log(`Cancel lobby and leave all players`)
@@ -97,7 +106,8 @@ export default class LobbyManager {
 
   async handleLobbyIdReceived (lobby) {
     return new Promise((resolve, reject) => {
-      this.chatChannel = `Lobby_1`
+      console.log(this.dota.ToAccountID())
+      this.chatChannel = `Lobby_${this.lobby.lobby_id.low}`
       this.dota.joinChat(this.chatChannel)
     })
   }
@@ -164,17 +174,5 @@ export default class LobbyManager {
       console.log('Error in launch Lobby: ', e)
       throw new Error(e)
     }
-  }
-
-  invitePlayers (players) {
-    console.log('Init invite players')
-    players.forEach(player => {
-      this.dota.on('lobbyInviteUpdate', (invite) => {
-        console.log(JSON.stringify(invite, null, 2))
-        this.dota.respondLobbyInvite(invite.group_id, true)
-      })
-    })
-
-    console.log(`Players inviteds: ${players.length}`)
   }
 }
